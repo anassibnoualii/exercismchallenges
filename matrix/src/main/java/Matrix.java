@@ -1,42 +1,38 @@
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 class Matrix {
-    private static final String ROW_DELIMITER = "\n";
-    private static final String COLUMN_DELIMITER = " ";
-    private String matrixString;
+
+    private static final String ROWS_SPLITTER = "\n";
+    private static final String COLUMN_SPLITTER = " ";
+    private List<List<Integer>> internalMatrix;
 
     Matrix(String matrixAsString) {
-        this.matrixString=matrixAsString;
+        internalMatrix = Stream.of(matrixAsString.split(ROWS_SPLITTER))
+                .map( Matrix::splitRow )
+                .collect(toList());
+    }
+
+    private static List<Integer> splitRow(String s) {
+        return Stream.of(s.split(COLUMN_SPLITTER))
+                .map(Integer::valueOf)
+                .collect(toList());
     }
 
     int[] getRow(int rowNumber) {
 
-       String  arrayOfString[] = getStringArray(rowNumber);
-       int arrayOfInt[] = new int[arrayOfString.length];
-        for (int i=0;i<arrayOfString.length;i++){
-            arrayOfInt[i]=Integer.valueOf(arrayOfString[i]);
-        }
-        return arrayOfInt;
-    }
-
-    private String[] getStringArray(int rowNumber) {
-        return  Arrays.asList(matrixString.split(ROW_DELIMITER)).get(rowNumber - 1).split(COLUMN_DELIMITER);
-    }
-
-    private List<String> getStringArrayColumn(int columnNumber) {
-        return  Arrays.asList(matrixString.split(ROW_DELIMITER)).stream().map(s -> Arrays.asList(s.split(COLUMN_DELIMITER)).get(columnNumber-1)).collect(Collectors.toList());
+        return internalMatrix.get(rowNumber-1).stream()
+                .mapToInt(Integer::intValue)
+                .toArray();
     }
 
     int[] getColumn(int columnNumber) {
-        List<String>  arrayOfString = getStringArrayColumn(columnNumber);
-        int arrayOfInt[] = new int[arrayOfString.size()];
-        for (int i=0;i<arrayOfString.size();i++){
-            arrayOfInt[i]=Integer.valueOf(arrayOfString.get(i));
-        }
-        return arrayOfInt;
-
+        return internalMatrix.stream()
+                .map(row -> row.get(columnNumber-1))
+                .mapToInt(Integer::intValue)
+                .toArray();
     }
+
 }
