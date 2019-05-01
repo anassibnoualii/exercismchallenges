@@ -125,6 +125,12 @@ public class TriangleTest {
 
         assertFalse(triangle.isScalene());
     }
+    @Test
+    public void trianglesWithOneUnequalSideAreNotScaleneSecondCase() throws TriangleException {
+        Triangle triangle = new Triangle(4, 3, 3);
+
+        assertFalse(triangle.isScalene());
+    }
 
     @Test
     public void testSidesThatViolateTriangleInequalityAreNotScaleneEvenIfTheyAreAllDifferent()
