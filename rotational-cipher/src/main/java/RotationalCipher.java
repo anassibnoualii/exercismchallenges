@@ -1,9 +1,10 @@
 class RotationalCipher {
 
-    private static final int ALPHABET_MAX_LENGHT = 26;
-    private static final int ALPHABET_MIN_LENGHT = 0;
+    private static final int ALPHABETS_MAX_LENGTH = 26;
+    private static final int ALPHABETS_MIN_LENGTH = 0;
     private final int  shiftKey;
-    private final static String ALPHABETS ="abcdefghijklmnopqrstuvwxyz";
+    private final static String LOWERCASE_ALPHABETS ="abcdefghijklmnopqrstuvwxyz";
+    private final static String UPPERCASE_ALPHABETS ="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     RotationalCipher(int shiftKey) {
         this.shiftKey=shiftKey;
@@ -13,15 +14,15 @@ class RotationalCipher {
     String rotate(String data) {
         StringBuilder stringBuilder = new StringBuilder();
         for (char s : data.toCharArray()){
-            if(shiftKey== ALPHABET_MIN_LENGHT ||shiftKey== ALPHABET_MAX_LENGHT){
+            if(shiftKey== ALPHABETS_MIN_LENGTH ||shiftKey== ALPHABETS_MAX_LENGTH){
                 stringBuilder.append(s);
             }
             else if(Character.isLowerCase(s)&&Character.isAlphabetic(s)) {
-                stringBuilder.append(Character.toLowerCase(ALPHABETS.charAt(((shiftKey+ ALPHABETS.indexOf(s))%ALPHABET_MAX_LENGHT))));
+                stringBuilder.append(LOWERCASE_ALPHABETS.charAt((shiftKey+ LOWERCASE_ALPHABETS.indexOf(s))%ALPHABETS_MAX_LENGTH));
             }
 
             else if(Character.isUpperCase(s)&&Character.isAlphabetic(s)) {
-                stringBuilder.append(Character.toUpperCase(ALPHABETS.charAt(((shiftKey+ ALPHABETS.indexOf(Character.toLowerCase(s)))%26))));
+                stringBuilder.append(UPPERCASE_ALPHABETS.charAt((shiftKey+ UPPERCASE_ALPHABETS.indexOf(s))%ALPHABETS_MAX_LENGTH));
 
             }
             else stringBuilder.append(s);
